@@ -153,6 +153,8 @@ class pool:
             for xs_ in (progress(xss) if progress is not None else xss):
                 result_stage = self._reduce(r, self._map(m, xs_))
                 result = result_stage if result is None else r(result, result_stage)
+                if callable(getattr(progress, 'update', None)):
+                    progress.update(result, result_stage)
 
         # Release resources if directed to do so.
         if close:
